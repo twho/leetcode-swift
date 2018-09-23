@@ -1,5 +1,7 @@
 // LeetCode: https://leetcode.com/problems/zigzag-conversion/description/
 
+import XCTest
+
 class Solution {
     func convert(_ s: String, _ numRows: Int) -> String {
         var output = ""
@@ -24,6 +26,20 @@ class Solution {
     }
 }
 
-let solution = Solution()
-print("\(solution.convert("PAYPALISHIRING", 3))")
-print("\(solution.convert("PAYPALISHIRING", 4))")
+class Tests: XCTestCase {
+    let solution = Solution()
+    
+    func testSample1() {
+        let input = ("PAYPALISHIRING", 4)
+        let expected = "PINALSIGYAHRPI"
+        XCTAssertEqual(solution.convert(input.0, input.1), expected)
+    }
+    
+    func testSample2() {
+        let input = ("PAYPALISHIRING", 3)
+        let expected = "PAHNAPLSIIGYIR"
+        XCTAssertEqual(solution.convert(input.0, input.1), expected)
+    }
+}
+
+Tests.defaultTestSuite.run()

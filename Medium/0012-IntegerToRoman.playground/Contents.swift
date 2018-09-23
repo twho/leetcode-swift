@@ -10,6 +10,8 @@
  1000 : "M"
  */
 
+import XCTest
+
 class Solution {
     func intToRoman(_ num: Int) -> String {
         var output = ""
@@ -63,9 +65,38 @@ class Solution {
     }
 }
 
-let solution = Solution()
-print("\(solution.intToRoman(3))")
-print("\(solution.intToRoman(4))")
-print("\(solution.intToRoman(9))")
-print("\(solution.intToRoman(58))")
-print("\(solution.intToRoman(1994))")
+class Tests: XCTestCase {
+    let solution = Solution()
+    
+    func sampleTest1() {
+        let input = 3
+        let expected = "III"
+        XCTAssertEqual(solution.intToRoman(input), expected)
+    }
+    
+    func sampleTest2() {
+        let input = 4
+        let expected = "IV"
+        XCTAssertEqual(solution.intToRoman(input), expected)
+    }
+
+    func sampleTest3() {
+        let input = 9
+        let expected = "IX"
+        XCTAssertEqual(solution.intToRoman(input), expected)
+    }
+
+    func sampleTest4() {
+        let input = 58
+        let expected = "LVIII"
+        XCTAssertEqual(solution.intToRoman(input), expected)
+    }
+
+    func sampleTest5() {
+        let input = 1994
+        let expected = "MCMXCIV"
+        XCTAssertEqual(solution.intToRoman(input), expected)
+    }
+}
+
+Tests.defaultTestSuite.run()

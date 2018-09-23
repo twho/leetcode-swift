@@ -1,4 +1,7 @@
 // LeetCode: https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+// Note: Use Set() to solve the problem: time limit exceeded.
+
+import XCTest
 
 class Solution {
     func lengthOfLongestSubstring(_ s: String) -> Int {
@@ -27,5 +30,20 @@ class Solution {
     }
 }
 
-let s = Solution()
-print("\(s.lengthOfLongestSubstring("dvdf"))")
+class Tests: XCTestCase {
+    let solution = Solution()
+    
+    func testSample1() {
+        let sample = "dvdf"
+        let expected = 3
+        XCTAssertEqual(solution.lengthOfLongestSubstring(sample), expected)
+    }
+    
+    func testSample2() {
+        let sample = "abcabcbb"
+        let expected = 3
+        XCTAssertEqual(solution.lengthOfLongestSubstring(sample), expected)
+    }
+}
+
+Tests.defaultTestSuite.run()
