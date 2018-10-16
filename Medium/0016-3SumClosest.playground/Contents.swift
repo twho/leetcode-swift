@@ -1,44 +1,70 @@
 // LeetCode: https://leetcode.com/problems/3sum-closest/description/
 // Simple math
 
+import XCTest
+
 class Solution {
     func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
-        var sortedN = nums.sorted()
-        var pairs: [Int: [Int]] = [:]
-        var i = 0
-        while i < sortedN.count {
-            var k = i + 1
-            while k < sortedN.count {
-                let comp = target - sortedN[k] - sortedN[i]
-                if nil == pairs[comp] {
-                    pairs[comp] = [i, k]
+        var sorted = nums.sorted()
+        var current: Int?
+        for i in 0..<sorted.count {
+            var start = i + 1
+            var end = sorted.count - 1
+            while start < end {
+                let sum = sorted[i] + sorted[start] + sorted[end]
+                if target == sum {
+                    return sum
                 }
-                k += 1
-            }
-            i += 1
-        }
-        var output: Int?
-        var third = 0
-        while third < sortedN.count {
-            for pair in pairs {
-                if !pair.value.contains(third) {
-                    if pair.key == sortedN[third] {
-                        return target
-                    } else {
-                        if nil == output {
-                            output = target - pair.key + sortedN[third]
-                        } else if abs(pair.key - sortedN[third]) < abs(target - output!) {
-                            output = target - pair.key + sortedN[third]
-                        }
+                if let curVal = current {
+                    if abs(target - sum) < abs(target - curVal) {
+                        current = sum
                     }
+                    if sum > target {
+                        end -= 1
+                    } else {
+                        start += 1
+                    }
+                } else {
+                    current = sum
                 }
             }
-            third += 1
         }
-        return output!
+        return current!
     }
 }
 
-let solution = Solution()
-print("\(solution.threeSumClosest([-1, 2, 1, -4], 1))")   // 2
-print("\(solution.threeSumClosest([-3,-2,-5,3,-4], -1))") // -2
+class Tests: XCTestCase {
+    let s = Solution()
+    
+    func testSample1() {
+        let input = ([-1, 2, 1, -4], 1)
+        let expected = 2
+        XCTAssertEqual(s.threeSumClosest(input.0, input.1), expected)
+    }
+    
+    func testSample2() {
+        let input = ([-3,-2,-5,3,-4], -1)
+        let expected = -2
+        XCTAssertEqual(s.threeSumClosest(input.0, input.1), expected)
+    }
+    
+    func testSample3() {
+        let input = ([0,2,1,-3], 1)
+        let expected = 0
+        XCTAssertEqual(s.threeSumClosest(input.0, input.1), expected)
+    }
+    
+    func testSample4() {
+        let input = ([1,1,-1,-1,3], -1)
+        let expected = -1
+        XCTAssertEqual(s.threeSumClosest(input.0, input.1), expected)
+    }
+    
+    func testSample5() {
+        let input = ([1,2,4,8,16,32,64,128], 82)
+        let expected = 82
+        XCTAssertEqual(s.threeSumClosest(input.0, input.1), expected)
+    }
+}
+
+Tests.defaultTestSuite.run()
