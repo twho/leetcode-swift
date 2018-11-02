@@ -19,9 +19,7 @@ func bubbleSort(_ nums: [Int]) -> [Int] {
     for i in 0..<output.count {
         for j in 0..<output.count-i-1 {
             if (output[j] > output[j+1]) {
-                let temp = output[j]
-                output[j] = output[j+1]
-                output[j+1] = temp
+                (output[j], output[j+1]) = (output[j+1], output[j])
             }
         }
     }
@@ -46,32 +44,27 @@ func mergeSort(_ nums: [Int]) -> [Int] {
     guard nums.count > 1 else { return nums }
     
     let midIndex = nums.count / 2
-    let leftArray = mergeSort(Array(nums[0..<midIndex]))
-    let rightArray = mergeSort(Array(nums[midIndex..<nums.count]))
+    var leftArray = mergeSort(Array(nums[0..<midIndex]))
+    var rightArray = mergeSort(Array(nums[midIndex..<nums.count]))
     
     // Merge
     var results: [Int] = []
-    var leftIndex = 0
-    var rightIndex = 0
-    while true {
-        guard leftIndex < leftArray.count else {
-            results.append(contentsOf: rightArray[rightIndex..<rightArray.endIndex])
-            return results
-        }
-        
-        guard rightIndex < rightArray.count else {
-            results.append(contentsOf: leftArray[leftIndex..<leftArray.endIndex])
-            return results
-        }
-        
-        if leftArray[leftIndex] > rightArray[rightIndex] {
-            results.append(rightArray[rightIndex])
-            rightIndex += 1
-        } else {
-            results.append(leftArray[leftIndex])
-            leftIndex += 1
+    while leftArray.count > 0 || rightArray.count > 0 {
+        if leftArray.count > 0 && rightArray.count > 0 {
+            if leftArray.first! < rightArray.first! {
+                results.append(leftArray.removeFirst())
+            } else {
+                results.append(rightArray.removeFirst())
+            }
+        } else if leftArray.count > 0  {
+            results.append(contentsOf: leftArray)
+            leftArray = []
+        } else if rightArray.count > 0 {
+            results.append(contentsOf: rightArray)
+            rightArray = []
         }
     }
+    return results
 }
 
 print("\(mergeSort(testArray))")
@@ -97,26 +90,4 @@ func quicksort(_ nums: [Int])  -> [Int] {
     return quicksort(less) + equal + quicksort(greater)
 }
 
-func quicksort(_ input: [Int], low: Int, high: Int) -> [Int] {
-    var result = input
-    
-    if low < high {
-        let pivot = result[high]
-        var i = low
-        
-        for j in low..<high {
-            if result[j] <= pivot {
-                (result[i], result[j]) = (result[j], result[i])
-                i += 1
-            }
-        }
-        (result[i], result[high]) = (result[high], result[i])
-        result = quicksort(result, low: low, high: i - 1)
-        result = quicksort(result, low: i + 1, high: high)
-    }
-    
-    return result
-}
-
 print("\(quicksort(testArray))")
-print("\(quicksort(testArray, low: 0, high: testArray.count - 1))")
