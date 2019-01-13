@@ -8,29 +8,32 @@ class Solution {
         guard nums.count >= 3 else {
             return []
         }
-        let sort = nums.sorted()
-        var output: [[Int]] = []
-        for i in 0..<sort.count - 2 {
-            if i > 0, sort[i] == sort[i-1] {
+        
+        var output = [[Int]]()
+        var sort = nums.sorted()
+        
+        for index in 0..<sort.count - 2 {
+            if index > 0, sort[index] == sort[index-1] {
                 continue
             }
-            var start = i + 1
-            var end = sort.count - 1
-            while start < end {
-                if sort[i] + sort[start] + sort[end] == 0 {
-                    output.append([sort[i], sort[start], sort[end]])
-                    start += 1
-                    end -= 1
-                    while start < end, start - 1 >= 0, sort[start] == sort[start - 1] {
-                        start += 1
+            var left = index + 1
+            var right = sort.count - 1
+            while left < right {
+                if sort[left] + sort[right] + sort[index] == 0 {
+                    output.append([sort[index], sort[left], sort[right]])
+                    
+                    left += 1
+                    right -= 1
+                    while left < right, sort[left] == sort[left - 1] {
+                        left += 1
                     }
-                    while start < end, end + 1 < sort.count, sort[end] == sort[end + 1] {
-                        end -= 1
+                    while left < right, sort[right] == sort[right + 1] {
+                        right -= 1
                     }
-                } else if sort[i] + sort[start] + sort[end] < 0 {
-                    start += 1
+                } else if sort[left] + sort[right] + sort[index] < 0 {
+                    left += 1
                 } else {
-                    end -= 1
+                    right -= 1
                 }
             }
         }

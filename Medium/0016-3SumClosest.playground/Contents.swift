@@ -5,31 +5,28 @@ import XCTest
 
 class Solution {
     func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
-        var sorted = nums.sorted()
-        var current: Int?
-        for i in 0..<sorted.count {
-            var start = i + 1
-            var end = sorted.count - 1
+        guard nums.count > 2 else { return -1 }
+        let sort = nums.sorted()
+        var closest: Int?
+        for idx in 0..<sort.count-2 {
+            var start = idx + 1
+            var end = sort.count-1
             while start < end {
-                let sum = sorted[i] + sorted[start] + sorted[end]
-                if target == sum {
-                    return sum
+                if sort[idx] + sort[start] + sort[end] == target {
+                    return target
                 }
-                if let curVal = current {
-                    if abs(target - sum) < abs(target - curVal) {
-                        current = sum
-                    }
-                    if sum > target {
-                        end -= 1
-                    } else {
-                        start += 1
-                    }
+                if closest == nil || abs(sort[idx] + sort[start] + sort[end] - target) < abs(closest! - target) {
+                    closest = sort[idx] + sort[start] + sort[end]
+                }
+                
+                if sort[idx] + sort[start] + sort[end] < target {
+                    start += 1
                 } else {
-                    current = sum
+                    end -= 1
                 }
             }
         }
-        return current!
+        return closest!
     }
 }
 

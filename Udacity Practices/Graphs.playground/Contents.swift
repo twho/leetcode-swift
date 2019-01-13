@@ -36,7 +36,6 @@ struct Edge {
 }
 
 class Graph {
-    
     var nodes: [Node]
     var edges: [Edge]
     
@@ -56,7 +55,7 @@ class Graph {
     func dfsHelper(_ current: Node, visited: [Int]) -> [Int] {
         var result = visited
         
-        for edge in edges {
+        for edge in current.edges {
             if !result.contains((edge.destination?.value)!) {
                 result.append(edge.destination!.value)
                 result = dfsHelper(edge.destination!, visited: result)
@@ -65,31 +64,26 @@ class Graph {
         return result
     }
     
-    
     // Create an iterative implementation.
     // Return a list of the node values.
     func bfs(_ startNode: inout Node) -> [Int] {
-        var visited: [Int] = []
+        var output: [Int] = []
         var toVisit: [Node] = [] // Treat this array as a queue
         
         toVisit.append(startNode)
-        visited.append(startNode.value)
+        output.append(startNode.value)
         startNode.visited = true
         
         while !toVisit.isEmpty {
             let node = toVisit.removeFirst()
-            
             for edge in node.edges {
-                var neighborNode = edge.destination
-                
-                if !(neighborNode?.visited)! {
-                    toVisit.append(neighborNode!)
-                    neighborNode?.visited = true
-                    visited.append((neighborNode?.value)!)
+                if let neighborNode = edge.destination, !output.contains(neighborNode.value) {
+                    toVisit.append(neighborNode)
+                    output.append(neighborNode.value)
                 }
             }
         }
-        return visited
+        return output
     }
 
     // Return an array of arrays where inner arrays look like
@@ -172,27 +166,37 @@ class Graph {
         var fromFound: Node? = nil
         var toFound: Node? = nil
         
-        for node in nodes {
-            if srcValue == node.value {
-                fromFound = node
+        var idx = 0
+        while idx < nodes.count {
+            if srcValue == nodes[idx].value  {
+                fromFound = nodes[idx]
             }
-            if destValue == node.value {
-                toFound = node
+            
+            if destValue == nodes[idx].value {
+                toFound = nodes[idx]
             }
+            idx += 1
         }
         
         if fromFound == nil {
             fromFound = Node(value: srcValue)
             nodes.append(fromFound!) 
         }
+        
         if toFound == nil {
             toFound = Node(value: destValue)
             nodes.append(toFound!)
         }
         
         let newEdge = Edge(value: newVal, source: fromFound, destination: toFound)
-        fromFound?.edges.append(newEdge)
-        toFound?.edges.append(newEdge)
+        
+        idx = 0
+        while idx < nodes.count {
+            if srcValue == nodes[idx].value || destValue == nodes[idx].value {
+                nodes[idx].edges.append(newEdge)
+            }
+            idx += 1
+        }
         edges.append(newEdge)
     }
 }

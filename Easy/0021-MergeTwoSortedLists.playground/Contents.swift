@@ -1,5 +1,7 @@
 // LeetCode: https://leetcode.com/problems/merge-two-sorted-lists/description/
 
+import XCTest
+
 public class ListNode {
     public var val: Int
     public var next: ListNode?
@@ -8,48 +10,49 @@ public class ListNode {
         self.next = nil
     }
 }
+
 class Solution {
     func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        if nil != l1, nil == l2 {
-            return l1
-        } else if nil == l1, nil != l2 {
-            return l2
-        }
-        
-        guard let l1 = l1, let l2 = l2 else {
+        guard l1 != nil || l2 != nil else {
             return nil
         }
-        var head: ListNode?
-        var output: ListNode?
-        var list1: ListNode? = l1
-        var list2: ListNode? = l2
-        if (list1?.val)! < (list2?.val)! {
-            head = l1
-            list1 = list1?.next
-        } else {
-            head = l2
-            list2 = list2?.next
+        if l1 == nil {
+            return l2
+        } else if l2 == nil {
+            return l1
         }
-        output = head
         
-        while nil != list1 || nil != list2 {
-            guard nil != list1 else {
-                head?.next = list2
-                return output
-            }
-            guard nil != list2 else {
-                head?.next = list1
-                return output
-            }
-            if (list1?.val)! < (list2?.val)! {
-                head?.next = list1
-                list1 = list1?.next
-            } else {
-                head?.next = list2
-                list2 = list2?.next
-            }
-            head = head?.next
+        var l1 = l1
+        var l2 = l2
+        var value: Int!
+        if (l1?.val)! < (l2?.val)! {
+            value = (l1?.val)!
+            l1 = l1?.next
+        } else {
+            value = (l2?.val)!
+            l2 = l2?.next
         }
-        return output
+        var head = ListNode(value)
+        var node: ListNode? = head
+        
+        while l1 != nil || l2 != nil {
+            if l1 == nil {
+                node?.next = l2
+                break
+            } else if l2 == nil {
+                node?.next = l1
+                break
+            }
+            
+            if (l1?.val)! < (l2?.val)! {
+                node?.next = ListNode((l1?.val)!)
+                l1 = l1?.next
+            } else {
+                node?.next = ListNode((l2?.val)!)
+                l2 = l2?.next
+            }
+            node = node?.next
+        }
+        return head
     }
 }

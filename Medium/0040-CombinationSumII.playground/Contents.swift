@@ -1,59 +1,78 @@
 // LeetCode: https://leetcode.com/problems/combination-sum-ii/description/
 
+import XCTest
+
 class Solution {
     func combinationSum2(_ candidates: [Int], _ target: Int) -> [[Int]] {
         var output: [[Int]] = []
-        var index = 0
+        let current: [Int] = []
         let sorted = candidates.sorted()
-        while index < sorted.count {
-            var temp = sorted
-            var newSeq = [sorted[index]]
-            temp = Array(temp[index+1..<temp.count])
-            combinationSum2(&output, &newSeq, temp, target-sorted[index])
-            index += 1
-            if index < sorted.count, sorted[index - 1] == sorted[index] {
-                index += 1
-            }
-        }
+        helper(sorted, target, current, &output)
         return output
     }
     
-    private func combinationSum2(_ output: inout [[Int]], _ sequence: inout [Int], _ candidates: [Int], _ target: Int) {
-        if target == 0, !output.contains(sequence.sorted()) {
-            output.append(sequence.sorted())
+    func helper(_ candidates: [Int], _ target: Int, _ current: [Int], _ output: inout [[Int]]) {
+        if target <= 0 {
+            if target == 0 {
+                output.append(current)
+            }
             return
         }
-        guard target > 0 else {
+        
+        if candidates.count == 0 {
             return
         }
-        var index = 0
-        while index < candidates.count {
-            var temp = sequence
-            var remain = candidates
-            temp.append(candidates[index])
-            remain.remove(at: index)
-            combinationSum2(&output, &temp, remain, target - candidates[index])
-            index += 1
+        
+        var prev: Int?
+        for (index, num) in candidates.enumerated() {
+            if num > target {
+                continue
+            }
+            
+            if let prev = prev, prev == num {
+                continue
+            }
+            var temp = Array(candidates[index..<candidates.count])
+            var new = current
+            new.append(temp.remove(at: 0))
+            helper(temp, target - num, new, &output)
+            prev = num
         }
     }
 }
 
-let solution = Solution()
-print(solution.combinationSum2([10,1,2,7,6,1,5], 8))
-/**
- A solution set is:
- [
-    [1, 7],
-    [1, 2, 5],
-    [2, 6],
-    [1, 1, 6]
- ]
- */
-print(solution.combinationSum2([2,5,2,1,2], 5))
-/**
- A solution set is:
- [
-    [1,2,2],
-    [5]
- ]
- */
+class Tests: XCTestCase {
+    let s = Solution()
+    
+    func testSample1() {
+        let input = ([10,1,2,7,6,1,5], 8)
+        let expected = [
+            [1, 7],
+            [1, 2, 5],
+            [2, 6],
+            [1, 1, 6]
+        ]
+        let output = s.combinationSum2(input.0, input.1)
+        
+        XCTAssertEqual(output.count, expected.count)
+        for arr in output {
+            XCTAssertTrue(expected.contains(arr))
+        }
+    }
+    
+    func testSample2() {
+        let input = ([2,5,2,1,2], 5)
+        let expected = [
+            [1,2,2],
+            [5]
+        ]
+        let output = s.combinationSum2(input.0, input.1)
+        
+        XCTAssertEqual(output.count, expected.count)
+        for arr in output {
+            XCTAssertTrue(expected.contains(arr))
+        }
+    }
+}
+
+Tests.defaultTestSuite.run()
