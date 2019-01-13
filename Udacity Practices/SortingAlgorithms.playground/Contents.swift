@@ -76,13 +76,14 @@ print("\(mergeSort(testArray))")
      - Average: O(nlog(n))
      - Worst:   O(n^2)
  Space:
-     - O(1)
+     - Average: O(log(n))
+     - Worst:   O(n)
  */
 
 func quicksort(_ nums: [Int])  -> [Int] {
     guard nums.count > 1 else { return nums }
     
-    let pivot = nums[nums.count/2]
+    let pivot = nums[nums.count-1]
     let less = nums.filter { $0 < pivot }
     let equal = nums.filter { $0 == pivot }
     let greater = nums.filter { $0 > pivot }

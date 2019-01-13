@@ -1,5 +1,7 @@
 // LeetCode: https://leetcode.com/problems/merge-k-sorted-lists/description/
 
+import XCTest
+
 public class ListNode {
     public var val: Int
     public var next: ListNode?
@@ -11,33 +13,27 @@ public class ListNode {
 
 class Solution {
     func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
-        var arr: [Int] = []
+        var arr = [Int]()
+        
         for head in lists {
-            arr = arr + toArray(head)
+            var node = head
+            while node != nil {
+                arr.append((node?.val)!)
+                node = node?.next
+            }
         }
         arr = arr.sorted()
-        return toLinkedList(arr: arr)
+        return toLinkedList(arr)
     }
-    private func toArray(_ head: ListNode?) -> [Int] {
-        guard nil != head else {
-            return []
-        }
-        var arr: [Int] = []
-        var node = head
-        while nil != node {
-            arr.append((node?.val)!)
-            node = node?.next
-        }
-        return arr
-    }
-    private func toLinkedList(arr: [Int]) -> ListNode? {
+    
+    private func toLinkedList(_ arr: [Int]) -> ListNode? {
         guard arr.count > 0 else {
             return nil
         }
         guard arr.count > 1 else {
             return ListNode(arr[0])
         }
-        var head = ListNode(arr[0])
+        let head = ListNode(arr[0])
         var node: ListNode? = ListNode(arr[1])
         head.next = node
         var index = 1
@@ -49,3 +45,43 @@ class Solution {
         return head
     }
 }
+
+class Tests: XCTestCase {
+    let s = Solution()
+    
+    func testSample1() {
+        let input: [ListNode?] = [
+            arrayToLinkedList([1,4,5]),
+            arrayToLinkedList([1,3,4]),
+            arrayToLinkedList([2,6])
+        ]
+        var output = s.mergeKLists(input)
+        var expected = arrayToLinkedList([1,1,2,3,4,4,5,6])
+        while expected != nil {
+            XCTAssertEqual(expected?.val, output?.val)
+            output = expected?.next
+            expected = expected?.next
+        }
+    }
+    
+    private func arrayToLinkedList(_ arr: [Int]) -> ListNode? {
+        guard arr.count > 0 else {
+            return nil
+        }
+        guard arr.count > 1 else {
+            return ListNode(arr[0])
+        }
+        let head = ListNode(arr[0])
+        var node: ListNode? = ListNode(arr[1])
+        head.next = node
+        var index = 1
+        while index + 1 < arr.count {
+            node?.next = ListNode(arr[index+1])
+            node = node?.next
+            index += 1
+        }
+        return head
+    }
+}
+
+Tests.defaultTestSuite.run()
