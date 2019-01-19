@@ -84,6 +84,34 @@ func inorderTraversal(_ root: TreeNode?) -> [Int] {
     return results
 }
 
+// level order traversal
+// Result should be: [1, 2, 3, 4, 5, 6, 7]
+func levelOrder(_ root: TreeNode?) -> [[Int]] {
+    var output = [[Int]]()
+    helper(0, root, &output)
+    return output
+}
+
+private func helper(_ level: Int, _ root: TreeNode?, _ output: inout [[Int]]) {
+    guard let root = root else {
+        return
+    }
+    
+    if output.count - 1 < level {
+        output.append([root.val])
+    } else {
+        output[level].append(root.val)
+    }
+    
+    if let left = root.left {
+        helper(level+1, left, &output)
+    }
+    
+    if let right = root.right {
+        helper(level+1, right, &output)
+    }
+}
+
 class Tests: XCTestCase {
     func testPreOrderTraversal() {
         let expected = [1, 2, 4, 5, 3, 6, 7]
@@ -98,6 +126,19 @@ class Tests: XCTestCase {
     func testInOrderTraversal() {
         let expected = [4, 2, 5, 1, 6, 3, 7]
         XCTAssertEqual(inorderTraversal(root), expected)
+    }
+    
+    func testLevelOrderTraversal() {
+        let expected = [
+            [1],
+            [2, 3],
+            [4, 5, 6, 7]
+        ]
+        let output = levelOrder(root)
+        XCTAssertEqual(output.count, expected.count)
+        for i in 0..<output.count {
+            XCTAssertEqual(output[i], expected[i])
+        }
     }
 }
 
