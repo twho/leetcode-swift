@@ -11,32 +11,26 @@ class Solution {
         var strArr = Array(s)
         
         while length > 0 {
-            for i in 0...s.count-length {
-                var left = i
-                var right = i+length-1
-                
-                if right >= strArr.count {
-                    break
-                }
-                
+            for i in 0...strArr.count-length {
                 var isPalindrome = true
-                while left < right {
-                    if strArr[left] != strArr[right] {
+                var left = i
+                var right = left + length - 1
+                while right > left {
+                    if strArr[left] == strArr[right] {
+                        left += 1
+                        right -= 1
+                    } else {
                         isPalindrome = false
                         break
                     }
-                    
-                    left += 1
-                    right -= 1
                 }
-
                 if isPalindrome {
                     return String(strArr[i..<i+length])
                 }
             }
             length -= 1
         }
-        return String(strArr[0])
+        return ""
     }
 }
 
@@ -60,7 +54,7 @@ class Tests: XCTestCase {
         let expected = "a"
         XCTAssertEqual(s.longestPalindrome(input), expected)
     }
-    
+
     func testSample4() {
         let input = "abcda"
         let expected = "a"

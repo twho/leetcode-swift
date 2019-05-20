@@ -4,27 +4,51 @@
 import XCTest
 
 class Solution {
+//    func lengthOfLongestSubstring(_ s: String) -> Int {
+//        guard s.count > 0 else {
+//            return 0
+//        }
+//
+//        var maxCount = 1
+//        if s.count == 1 {
+//            return maxCount
+//        }
+//        let strArr = Array(s) // Key: convert string to array
+//        for (index, char) in strArr.enumerated() {
+//            var dict: [Character : Int] = [:]
+//            var count = 1
+//            dict[char] = 1
+//            var movingIdx = index + 1
+//            while movingIdx < strArr.count, dict[strArr[movingIdx]] ?? 0 < 1 {
+//                dict[strArr[movingIdx]] = 1
+//                count += 1
+//                movingIdx += 1
+//            }
+//            maxCount = count > maxCount ? count : maxCount
+//        }
+//        return maxCount
+//    }
+    // 14
     func lengthOfLongestSubstring(_ s: String) -> Int {
-        guard s.count > 0 else {
-            return 0
-        }
-        
-        var maxCount = 1
-        if s.count == 1 {
-            return maxCount
-        }
-        let strArr = Array(s) // Key: convert string to array
-        for (index, char) in strArr.enumerated() {
-            var dict: [Character : Int] = [:]
-            var count = 1
-            dict[char] = 1
-            var movingIdx = index + 1
-            while movingIdx < strArr.count, dict[strArr[movingIdx]] ?? 0 < 1 {
-                dict[strArr[movingIdx]] = 1
+        let arr = Array(s)
+        var dict = [Character : Int]() // [char : idx]
+        var maxCount = 0
+        var count = 0
+        for idx in 0..<arr.count {
+            if dict[arr[idx]] == nil {
                 count += 1
-                movingIdx += 1
+                dict[arr[idx]] = idx
+            } else {
+                let startIdx = dict[arr[idx]]! + 1
+                dict[arr[idx]] = idx
+                for key in dict.keys {
+                    if dict[key]! < startIdx {
+                        dict[key] = nil
+                    }
+                }
+                count = idx - startIdx + 1
             }
-            maxCount = count > maxCount ? count : maxCount
+            maxCount = max(count, maxCount)
         }
         return maxCount
     }
@@ -38,9 +62,15 @@ class Tests: XCTestCase {
         let expected = 3
         XCTAssertEqual(solution.lengthOfLongestSubstring(sample), expected)
     }
-    
+
     func testSample2() {
         let sample = "abcabcbb"
+        let expected = 3
+        XCTAssertEqual(solution.lengthOfLongestSubstring(sample), expected)
+    }
+    
+    func testSample3() {
+        let sample = "pwwkew"
         let expected = 3
         XCTAssertEqual(solution.lengthOfLongestSubstring(sample), expected)
     }

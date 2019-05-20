@@ -1,38 +1,57 @@
 // LeetCode: https://leetcode.com/problems/course-schedule-ii/description/
+// Hint: use graph
 
 import XCTest
 
 class Solution {
+    var onPath = [Bool]()
+    var visited = [Bool]()
+    var hasCycle = false
+    
     func findOrder(_ numCourses: Int, _ prerequisites: [[Int]]) -> [Int] {
-        var output: [Int] = []
-        var dict: [Int:[Int]] = [:]
-        for course in prerequisites {
-            if dict[course[0]] == nil {
-                dict[course[0]] = [course[1]]
-            } else {
-                dict[course[0]]!.append(course[1])
+        var graph = [Node]()
+        for i in 0..<numCourses {
+            graph.append(Node(i, adj: [Node]()))
+        }
+        
+        var needPreCourses = Array(repeating: 0, count: numCourses)
+        for pre in prerequisites {
+            let from = pre[1]
+            let to = pre[0]
+            graph[from].adj.append(graph[to])
+            needPreCourses[to] += 1
+        }
+        
+        var courseToTakeFirst = [Int]()
+        for i in 0..<needPreCourses.count {
+            if needPreCourses[i] == 0 {
+                courseToTakeFirst.append(i)
             }
         }
         
-        // insert no prerequisites courses
-        for course in 0..<numCourses {
-            if dict[course] == nil {
-                output.append(course)
+        var res = [Int]()
+        while !courseToTakeFirst.isEmpty {
+            var course = courseToTakeFirst.removeFirst()
+            res.append(course)
+            
+            for node in graph[course].adj {
+                needPreCourses[node.label] -= 1
+                
+                if needPreCourses[node.label] == 0 {
+                    courseToTakeFirst.append(node.label)
+                }
             }
         }
-        
-        var idx = 0
-        var arr = Array(dict)
-        while idx < arr.count {
-            if Set(arr[idx].value).isSubset(of: Set(output)) {
-                output.append(arr[idx].key)
-                arr.remove(at: idx)
-                idx = 0
-                continue
-            }
-            idx += 1
+        return res.count == numCourses ? res : []
+    }
+    
+    class Node {
+        var label: Int
+        var adj: [Node]
+        init(_ label: Int, adj: [Node]) {
+            self.label = label
+            self.adj = adj
         }
-        return output.count == numCourses ? output : []
     }
 }
 
