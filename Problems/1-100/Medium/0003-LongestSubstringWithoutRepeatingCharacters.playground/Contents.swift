@@ -5,26 +5,23 @@ import XCTest
 
 class Solution {
     func lengthOfLongestSubstring(_ s: String) -> Int {
-        let arr = Array(s)
-        var dict = [Character : Int]() // [char : idx]
+        guard s.count > 1 else { return s.count }
+        var dict: [Character: Int] = [:]
+        var startIdx = 0
         var maxCount = 0
-        var count = 0
-        for idx in 0..<arr.count {
-            if dict[arr[idx]] == nil {
-                count += 1
-                dict[arr[idx]] = idx
-            } else {
-                let startIdx = dict[arr[idx]]! + 1
-                dict[arr[idx]] = idx
-                for key in dict.keys {
-                    if dict[key]! < startIdx {
-                        dict[key] = nil
-                    }
-                }
-                count = idx - startIdx + 1
+        
+        for (i, ch) in s.enumerated() {
+            if let existIdx = dict[ch] {
+                startIdx = max(startIdx, existIdx)
             }
-            maxCount = max(count, maxCount)
+            
+            // Include the current one, exclude the existed one
+            maxCount = max(maxCount, i - startIdx + 1)
+            
+            // Make the index be excluded
+            dict[ch] = i + 1
         }
+        
         return maxCount
     }
 }
@@ -47,6 +44,12 @@ class Tests: XCTestCase {
     func testSample3() {
         let sample = "pwwkew"
         let expected = 3
+        XCTAssertEqual(solution.lengthOfLongestSubstring(sample), expected)
+    }
+    
+    func testSample4() {
+        let sample = "au"
+        let expected = 2
         XCTAssertEqual(solution.lengthOfLongestSubstring(sample), expected)
     }
 }

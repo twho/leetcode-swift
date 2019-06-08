@@ -15,4 +15,4 @@ Straightforward solutions
 |:--:| -- | -- |
 | 1-100 | [View](https://github.com/twho/LeetCode-Swift/tree/master/Problems/1-100/) | ---|
 | 101-200 | [View](https://github.com/twho/LeetCode-Swift/tree/master/Problems/101-200/) | --- |
-| 101-200 | [View](https://github.com/twho/LeetCode-Swift/tree/master/Problems/201-300/) | --- |
+| 201-300 | [View](https://github.com/twho/LeetCode-Swift/tree/master/Problems/201-300/) | --- |

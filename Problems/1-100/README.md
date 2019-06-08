@@ -17,7 +17,7 @@ Straightforward solutions
 | # | Difficulty | Problem Title | Solution |
 |--| :--: | :--: | -- |
 | 0001 | 📗 | [Two Sum](https://leetcode.com/problems/two-sum/description/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/1-100/Easy/0001-TwoSum.playground/Contents.swift) |
-| 0002 | 📙 | [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/description/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/1-100/0002-AddTwoNumbers.playground/Contents.swift) |
+| 0002 | 📙 | [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/description/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/1-100/Medium/0002-AddTwoNumbers.playground/Contents.swift) |
 | 0003 | 📙 | [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/1-100/Medium/0003-LongestSubstringWithoutRepeatingCharacters.playground/Contents.swift) |
 | 0004 | 📕 | [Median of Two Sorted Arrays  ](https://leetcode.com/problems/median-of-two-sorted-arrays/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/1-100/Hard/0004-MedianOfTwoSortedArrays.playground/Contents.swift) |
 | 0005 | 📙 | [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/1-100/Medium/0005-LongestPalindromicSubstring.playground/Contents.swift) |
@@ -43,6 +43,7 @@ Straightforward solutions
 | 0028 | 📗 | [Implement strStr()](https://leetcode.com/problems/implement-strstr/description/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/1-100/Easy/0028-ImplementstrStr().playground/Contents.swift)|
 | 0029 | 📙 | [Divide Two Integers](https://leetcode.com/problems/divide-two-integers/description/) | [Solution](https://github.com/twho/LeetCode-Swift/tree/master/Problems/1-100/Medium/0029-DivideTwoIntegers.playground/Contents.swift) |
 | 0033 | 📙 | [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/description/) | [Solution](https://github.com/twho/LeetCode-Swift/tree/master/Problems/1-100/Medium/0033-SearchInRotatedSortedArray.playground/Contents.swift)|
+| 0034 | 📙 | [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) | [Solution](https://github.com/twho/LeetCode-Swift/tree/master/Problems/1-100/Medium/0034-FindFirstandLastPositionElementSortedArray.playground/Contents.swift)|
 | 0035 | 📗 | [Search Insert Position](https://leetcode.com/problems/search-insert-position/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/1-100/Easy/0035-SearchInsertPosition.playground/Contents.swift) |
 | 0039 | 📙 | [Combination Sum](https://leetcode.com/problems/combination-sum/) | [Solution](https://github.com/twho/LeetCode-Swift/tree/master/Problems/1-100/Medium/0039-CombinationSum.playground/Contents.swift) |
 |0040 | 📙 | [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/) | [Solution](https://github.com/twho/LeetCode-Swift/tree/master/Problems/1-100/Medium/0040-CombinationSumII.playground/Contents.swift)|
