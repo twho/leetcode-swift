@@ -1,24 +1,25 @@
 // LeetCode: https://leetcode.com/problems/unique-paths/description/
+// Use dynamic programming
 
 import XCTest
 
 class Solution {
     func uniquePaths(_ m: Int, _ n: Int) -> Int {
-        let rStage = m - 1
-        let dStage = n - 1
-        let step = (rStage + dStage) - max(rStage, dStage)
-        return fact(rStage + dStage, step)/fact(min(rStage, dStage))
-    }
-    
-    private func fact(_ n: Int, _ count: Int? = nil) -> Int {
-        if n == 1 || n == 0 {
-            return 1
+        guard m > 0, n > 0 else { return 0}
+        
+        var output = Array(repeating: Array(repeating: 0, count: n), count: m)
+        output[0][0] = 1
+        for i in 0..<m {
+            for j in 0..<n {
+                if i-1 >= 0 {
+                    output[i][j] += output[i-1][j]
+                }
+                if j-1 >= 0 {
+                    output[i][j] += output[i][j-1]
+                }
+            }
         }
-        if count ?? n > 0 {
-            return n * fact(n-1, (count ?? n) - 1)
-        } else {
-            return 1
-        }
+        return output[m-1][n-1]
     }
 }
 

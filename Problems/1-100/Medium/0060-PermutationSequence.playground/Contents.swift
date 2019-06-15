@@ -5,30 +5,24 @@ import XCTest
 class Solution {
     func getPermutation(_ n: Int, _ k: Int) -> String {
         guard n > 0, k > 0 else { return "" }
-        if n-1 < 1 {
-            return "\(n)"
-        }
-        var arr: [Int] = []
+        var ref = [Int]()
+        var count = 1
         for i in 1...n {
-            arr.append(i)
-        }
-        
-        var factList: [Int] = []
-        var current = 1
-        for i in 1...n {
-            current = current * i
-            factList.append(current)
+            ref.append(i)
+            count = count * i
         }
         
         var output = ""
-        for i in 1...n-1 {
-            var idx = Int((Double((k % factList[n-i])*arr.count)/Double(factList[n-i])).rounded(.up))-1
-            if idx < 0 {
-                idx += arr.count
-            }
-            output.append("\(arr.remove(at: idx))")
+        var newN = n
+        var newK = k
+        while ref.count > 0, count > 0 {
+            
+            let idx = Int((Double(ref.count*newK)/Double(count)).rounded(.up)) - 1
+            output += "\(ref.remove(at: idx))"
+            count = count/newN
+            newK = newK - idx*count
+            newN -= 1
         }
-        output.append("\(arr.removeLast())")
         return output
     }
 }

@@ -3,146 +3,78 @@
 
 import XCTest
 
-class Node {
-    let label: Int
-    var adj: [Node]
-    
-    init(_ label: Int, _ adj: [Node]) {
-        self.label = label
-        self.adj = adj
-    }
-}
-
-// Solution1
-class Solution1 {
-    var visited = [Bool]()
-    var onTraversePath = [Bool]()
-    var hasCycle = false
+class Solution {
     
     func canFinish(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {
-        var graph = [Node]()
-        for i in 0..<numCourses {
-            graph.append(Node(i, [Node]()))
-        }
-        
-        for pre in prerequisites {
-            let from = pre[0]
-            let to = pre[1]
-            
-            graph[from].adj.append(graph[to])
-        }
-        
-        visited = Array(repeating: false, count: graph.count)
-        onTraversePath = Array(repeating: false, count: graph.count)
-        hasCycle = false
-        
-        return !hasCycles(graph)
-    }
-    
-    
-    func hasCycles(_ graph: [Node]) -> Bool {
-        if graph.isEmpty {
-            return true
-        }
-        
-        for n in graph {
-            if !visited[n.label] && !hasCycle {
-                dfs(n)
-            }
-        }
-        
-        return hasCycle
-    }
-    
-    func dfs(_ node: Node) {
-        if hasCycle {
-            return
-        }
-        
-        visited[node.label] = true
-        onTraversePath[node.label] = true
-        
-        for adj in node.adj {
-            if !visited[adj.label] {
-                dfs(adj)
+        var dict = [Int : [Int]]() // [course : prerequisite]
+        for arr in prerequisites {
+            if dict[arr[0]] != nil {
+                dict[arr[0]]!.append(arr[1])
             } else {
-                // If true, the cycle exists.
-                if onTraversePath[adj.label] {
-                    hasCycle = true
-                }
+                dict[arr[0]] = [arr[1]]
             }
         }
-        
-        onTraversePath[node.label] = false
-    }
-}
-
-// Solution2
-class Solution2 {
-    func canFinish(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {
-        var graph = [Node]()
+        var visited = [Bool]()
+        var okCourse = Array(repeating: false, count: numCourses)
         for i in 0..<numCourses {
-            graph.append(Node(i, [Node]()))
-        }
-        
-        var needsPres = Array(repeating: 0, count: numCourses)
-        for pre in prerequisites {
-            let from = pre[1]
-            let to = pre[0]
-            graph[from].adj.append(graph[to])
-            needsPres[to] += 1
-        }
-        
-        var takeFirst = [Int]()
-        for i in 0..<needsPres.count {
-            if needsPres[i] == 0 {
-                takeFirst.append(i)
+            visited = Array(repeating: false, count: numCourses)
+            helper(i, &okCourse, visited, dict)
+            if !okCourse[i] {
+                return false
             }
         }
-        
-        var output = [Int]()
-        while !takeFirst.isEmpty {
-            let toTake = takeFirst.removeFirst()
-            output.append(toTake)
-            
-            for node in graph[toTake].adj {
-                needsPres[node.label] -= 1
-                if needsPres[node.label] == 0 {
-                    takeFirst.append(node.label)
+        return true
+    }
+    
+    private func helper(_ current: Int, _ okCourse: inout [Bool], _ visited: [Bool], _ dict: [Int : [Int]]) {
+        if let pres = dict[current] {
+            for pre in pres {
+                if okCourse[pre] {
+                    continue
+                }
+                if visited[pre] {
+                    okCourse[current] = false
+                    return
+                }
+                var temp = visited
+                temp[pre] = true
+                helper(pre, &okCourse, temp, dict)
+                if !okCourse[pre] {
+                    okCourse[current] = false
+                    return
                 }
             }
         }
-        return output.count == numCourses
+        okCourse[current] = true
     }
 }
 
 class Tests: XCTestCase {
-    let s1 = Solution1()
-    let s2 = Solution2()
+    let s = Solution()
     
-    func testSol1Sample1() {
+    func testSample1() {
         let input = (2, [[0,1],[1,0]])
-        XCTAssertFalse(s1.canFinish(input.0, input.1))
+        XCTAssertFalse(s.canFinish(input.0, input.1))
     }
     
-    func testSol1Sample2() {
-        let input = (2, [[0,1]])
-        XCTAssertTrue(s1.canFinish(input.0, input.1))
-    }
-    
-    func testSol2Sample1() {
-        let input = (2, [[0,1],[1,0]])
-        XCTAssertFalse(s2.canFinish(input.0, input.1))
-    }
-    
-    func testSol2Sample2() {
+    func testSample2() {
         let input = (2, [[1,0]])
-        XCTAssertTrue(s2.canFinish(input.0, input.1))
+        XCTAssertTrue(s.canFinish(input.0, input.1))
     }
     
-    func testSol2Sample3() {
+    func testSample3() {
         let input = (2, [[0,1]])
-        XCTAssertTrue(s2.canFinish(input.0, input.1))
+        XCTAssertTrue(s.canFinish(input.0, input.1))
+    }
+    
+    func testSample4() {
+        let input = (3, [[1,0],[1,2],[0,1]])
+        XCTAssertFalse(s.canFinish(input.0, input.1))
+    }
+    
+    func testSample5() {
+        let input = (3, [[0,1],[0,2],[1,2]])
+        XCTAssertTrue(s.canFinish(input.0, input.1))
     }
 }
 

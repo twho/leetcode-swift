@@ -4,39 +4,29 @@ import XCTest
 
 class Solution {
     func combinationSum2(_ candidates: [Int], _ target: Int) -> [[Int]] {
-        var output: [[Int]] = []
-        let current: [Int] = []
         let sorted = candidates.sorted()
-        helper(sorted, target, current, &output)
+        var output = [[Int]]()
+        let current = [Int]()
+        helper(sorted, 0, current, target, &output)
         return output
     }
     
-    func helper(_ candidates: [Int], _ target: Int, _ current: [Int], _ output: inout [[Int]]) {
-        if target <= 0 {
-            if target == 0 {
-                output.append(current)
-            }
+    private func helper(_ candidates: [Int], _ startIdx: Int, _ current: [Int], _ target: Int, _ output: inout [[Int]]) {
+        if target == 0 {
+            output.append(current)
             return
         }
         
-        if candidates.count == 0 {
+        if target <= 0 || startIdx >= candidates.count {
             return
         }
-        
-        var prev: Int?
-        for (index, num) in candidates.enumerated() {
-            if num > target {
+        for i in startIdx..<candidates.count {
+            if i > startIdx, i-1 >= 0, candidates[i-1] == candidates[i] {
                 continue
             }
-            
-            if let prev = prev, prev == num {
-                continue
-            }
-            var temp = Array(candidates[index..<candidates.count])
-            var new = current
-            new.append(temp.remove(at: 0))
-            helper(temp, target - num, new, &output)
-            prev = num
+            var temp = current
+            temp.append(candidates[i])
+            helper(candidates, i+1, temp, target-candidates[i], &output)
         }
     }
 }
@@ -67,7 +57,7 @@ class Tests: XCTestCase {
             [5]
         ]
         let output = s.combinationSum2(input.0, input.1)
-        
+
         XCTAssertEqual(output.count, expected.count)
         for arr in output {
             XCTAssertTrue(expected.contains(arr))

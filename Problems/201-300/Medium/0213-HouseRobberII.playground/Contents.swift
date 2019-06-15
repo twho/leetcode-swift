@@ -5,22 +5,41 @@ import XCTest
 class Solution {
     func rob(_ nums: [Int]) -> Int {
         guard nums.count > 0 else { return 0 }
-        if nums.count < 3 {
-            return nums.max()!
+        if nums.count == 1 {
+            return nums[0]
+        }
+        if nums.count == 2 {
+            return max(nums[0], nums[1])
         }
         
-        return max(getMaxVal(nums, 0, nums.count-2), getMaxVal(nums, 1, nums.count-1))
-    }
-    
-    private func getMaxVal(_ nums:[Int], _ start: Int, _ end: Int) -> Int {
-        var current = 0
-        var prev = 0
-        for i in start...end {
-            let temp = prev
-            prev = current
-            current = max(current, nums[i]+temp)
+        var arrNoHead = Array(repeating: 0, count: nums.count)
+        arrNoHead[0] = nums[1]
+        var last = arrNoHead[0]
+        var last2 = 0
+        var idx = 2
+        var maxVal = 0
+        maxVal = max(maxVal, last)
+        while idx < arrNoHead.count {
+            arrNoHead[idx] = max(last, nums[idx]+last2)
+            maxVal = max(maxVal, arrNoHead[idx])
+            (last2, last) = (last, arrNoHead[idx])
+            idx += 1
         }
-        return current
+        
+        var arrWithHead = Array(repeating: 0, count: nums.count)
+        arrWithHead[0] = nums[0]
+        arrWithHead[1] = max(nums[1], nums[0])
+        last = arrWithHead[1]
+        last2 = arrWithHead[0]
+        maxVal = max(maxVal, last2)
+        idx = 2
+        while idx < arrWithHead.count-1 {
+            arrWithHead[idx] = max(last, nums[idx]+last2)
+            maxVal = max(maxVal, arrWithHead[idx])
+            (last2, last) = (last, arrWithHead[idx])
+            idx += 1
+        }
+        return maxVal
     }
 }
 

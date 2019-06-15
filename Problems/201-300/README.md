@@ -35,4 +35,10 @@ Straightforward solutions
 | 0257 | 📗 | [Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Easy/0257-BinaryTreePaths.playground/Contents.swift) |
 | 0258 | 📗 | [Add Digits](https://leetcode.com/problems/add-digits/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Easy/0258-AddDigits.playground/Contents.swift) |
 | 0260 | 📙 | [Single Number III](https://leetcode.com/problems/single-number-iii/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Medium/0260-SingleNumberIII.playground/Contents.swift) |
+| 0263 | 📗 | [Ugly Number](https://leetcode.com/problems/ugly-number/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Easy/0263-UglyNumber.playground/Contents.swift) |
+| 0264 | 📙 | [Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Medium/0264-UglyNumberII.playground/Contents.swift) |
+| 0268 | 📗 | [Missing Number](https://leetcode.com/problems/missing-number/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Easy/0268-MissingNumber.playground/Contents.swift) |
+| 0274 | 📙 | [H-Index](https://leetcode.com/problems/h-index/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Medium/0274-H-Index.playground/Contents.swift) |
+| 0275 | 📙 | [H-Index II](https://leetcode.com/problems/h-index-ii/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Medium/0275-H-IndexII.playground/Contents.swift) |
 | 0287 | 📙 | [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Medium/0287-FindTheDuplicateNumber.playground/Contents.swift) |
+| 0292 | 📗 | [Nim Game](https://leetcode.com/problems/nim-game/) | [Solution](https://github.com/twho/LeetCode-Swift/blob/master/Problems/201-300/Easy/0292-NimGame.playground/Contents.swift) |
