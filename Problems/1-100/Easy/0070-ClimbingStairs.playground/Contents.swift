@@ -5,13 +5,22 @@ import XCTest
 
 class Solution {
     func climbStairs(_ n: Int) -> Int {
+        guard n > 0 else { return 0 }
         var arr = Array(repeating: 0, count: n)
         arr[0] = 1
-        guard n > 1 else { return arr[n-1] }
-        arr[1] = 2
-        guard n > 2 else { return arr[n-1] }
-        for i in 2..<n {
-            arr[i] = arr[i-1] + arr[i-2]
+        if n > 1 {
+            arr[1] = 2
+        }
+        
+        var idx = 2
+        while idx < n {
+            if idx - 1 >= 0 {
+                arr[idx] += arr[idx-1]
+            }
+            if idx - 2 >= 0 {
+                arr[idx] += arr[idx-2]
+            }
+            idx += 1
         }
         return arr[n-1]
     }

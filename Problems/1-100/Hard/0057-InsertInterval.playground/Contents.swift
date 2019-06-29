@@ -2,55 +2,27 @@
 
 import XCTest
 
-public class Interval {
-    public var start: Int
-    public var end: Int
-    
-    public init(_ start: Int, _ end: Int) {
-        self.start = start
-        self.end = end
-    }
-    
-    public init(_ array: [Int]) {
-        self.start = array[0]
-        self.end = array[1]
-    }
-    
-    public func toArray() -> [Int] {
-        return [self.start, self.end]
-    }
-}
-
 class Solution {
-    func insert(_ intervals: [Interval], _ newInterval: Interval) -> [Interval] {
-        guard intervals.count > 0 else {
-            return [newInterval]
-        }
-        var i = 0
-        var output: [Interval] = []
+    func insert(_ intervals: [[Int]], _ newInterval: [Int]) -> [[Int]] {
+        guard intervals.count > 0 else { return [newInterval] }
+        
+        var output = [[Int]]()
+        var idx = 0
+        var insertIdx = 0
         var newInterval = newInterval
-        var appendNew = true
-        while i < intervals.count {
-            if (intervals[i].end < newInterval.start) || (intervals[i].start > newInterval.end) {
-                output.append(intervals[i])
-                i += 1
-                continue
+        while idx < intervals.count {
+            let start = intervals[idx][0]
+            let end = intervals[idx][1]
+            if (end >= newInterval[0] && end <= newInterval[1]) || (start >= newInterval[0] && start <= newInterval[1]) {
+                newInterval = [min(start, newInterval[0]), max(end, newInterval[1])]
+            } else {
+                insertIdx += 1
+                output.append(intervals[idx])
             }
-            var j = i
-            while j < intervals.count, !((intervals[j].end < newInterval.start) || (intervals[j].start > newInterval.end)) {
-                appendNew = false
-                i = j
-                newInterval = Interval(min(intervals[j].start, newInterval.start), max(intervals[j].end, newInterval.end))
-                j += 1
-            }
-            i += 1
-            output.append(newInterval)
+            idx += 1
         }
-        if appendNew {
-            output.append(newInterval)
-            output.sort(by: { $0.start < $1.start })
-        }
-        return output
+        output.append(newInterval)
+        return output.sorted(by: { $0[0] < $1[0] })
     }
 }
 
@@ -58,37 +30,33 @@ class Tests: XCTestCase {
     let s = Solution()
     
     func testSample1() {
-        let input = ([Interval(1,3), Interval(6,9)], Interval(2,5))
+        let input = ([[1,3], [6,9]], [2,5])
         let expected = [[1,5],[6,9]]
-        var output: [[Int]] = []
-        for i in s.insert(input.0, input.1) {
-            output.append(i.toArray())
+        let output = s.insert(input.0, input.1)
+        for o in output {
+            expected.contains(o)
         }
-        XCTAssertEqual(output, expected)
+        XCTAssertEqual(output.count, expected.count)
     }
     
     func testSample2() {
-        let input = ([Interval(1,2), Interval(3,5), Interval(6,7), Interval(8,10), Interval(12,16)], Interval(4,8))
+        let input = ([[1,2], [3,5], [6,7], [8,10], [12,16]], [4,8])
         let expected = [[1,2],[3,10],[12,16]]
-        var output: [[Int]] = []
-        for i in s.insert(input.0, input.1) {
-            output.append(i.toArray())
+        let output = s.insert(input.0, input.1)
+        for o in output {
+            expected.contains(o)
         }
-        XCTAssertEqual(output, expected)
+        XCTAssertEqual(output.count, expected.count)
     }
     
     func testSample3() {
-        let input = ([Interval(1,5)], Interval(6,8))
-        let expected = [[1,5],[6,8]]
-        var output: [[Int]] = []
-        for i in s.insert(input.0, input.1) {
-            output.append(i.toArray())
+        let input = ([[1,5]], [6,8])
+        let expected = [[1,5], [6,8]]
+        let output = s.insert(input.0, input.1)
+        for o in output {
+            expected.contains(o)
         }
-        XCTAssertEqual(output, expected)
-    }
-    
-    func testSample4() {
-        
+        XCTAssertEqual(output.count, expected.count)
     }
 }
 
