@@ -4,46 +4,35 @@ import XCTest
 
 class Solution {
     func calculate(_ s: String) -> Int {
-        var output: [Int] = []
-        let strArr = Array(s + "+")
-        var open: [[Int]] = []
+        var brackets = 0
+        var op = "+"
         var num = 0
-        var sign: Character = "+"
-        
-        for ch in strArr {
-            if ch >= "0" && ch <= "9" {
+        var ops = [1]
+        var output = [Int]()
+        for ch in s+"+" {
+            if ch == "(" {
+                brackets += 1
+                if brackets < ops.count {
+                    ops[brackets] = op == "+" ? 1*ops[brackets-1] : -1*ops[brackets-1]
+                } else {
+                    ops.append(op == "+" ? 1*ops[brackets-1] : -1*ops[brackets-1])
+                }
+                op = "+"
+            } else if ch == ")" {
+                let val = num*ops[brackets]
+                output.append(op == "+" ? val : -val)
+                brackets -= 1
+                num = 0
+            } else if ch >= "0", ch <= "9" {
                 num = num*10 + Int(String(ch))!
             } else if ch == "+" || ch == "-" {
-                if open.count > 0 {
-                    open[0].append(sign == "+" ? num : -num)
-                } else {
-                    output.append(sign == "+" ? num : -num)
-                }
+                let val = num*ops[brackets]
+                output.append(op == "+" ? val : -val)
                 num = 0
-                sign = ch
-            } else if ch == "(" {
-                var newSign = sign == "+" ? 1 : -1
-                if open.count > 0 {
-                    newSign *= open[0][0]
-                }
-                var arr: [Int] = [newSign]
-                open.insert(arr, at: 0)
-                sign = "+"
-            } else if ch == ")" {
-                if num != 0 {
-                    open[0].append(sign == "+" ? num : -num)
-                    num = 0
-                }
-                let sign = open[0].removeFirst()
-                output.append(sign * open[0].reduce(0, {x,y in
-                    x+y
-                }))
-                open.removeFirst()
+                op = String(ch)
             }
         }
-        return output.reduce(0, {x,y in
-            x+y
-        })
+        return output.reduce(0, +)
     }
 }
 
