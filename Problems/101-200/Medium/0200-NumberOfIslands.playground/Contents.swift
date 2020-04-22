@@ -1,6 +1,8 @@
 // LeetCode: https://leetcode.com/problems/number-of-islands/description/
 // Hint: recursive/DFS
 
+import XCTest
+
 class Solution {
     func numIslands(_ grid: [[Character]]) -> Int {
         var grid = grid
@@ -38,56 +40,41 @@ class Solution {
     }
 }
 
-let solution = Solution()
-let one = Character("1")
-let zero = Character("0")
-let input1 = [
-    [one, one, zero, zero, zero],
-    [one, one, zero, zero, zero],
-    [zero, zero, one, zero, zero],
-    [zero, zero, zero, one, one]
-]
-/**
- Input:
- 11000
- 11000
- 00100
- 00011
- 
- Output: 3
- */
-print(solution.numIslands(input1))
+class Tests: XCTestCase {
+    let solution = Solution()
+    
+    func testNumberOfIslands1() {
+        let input: [[Character]] = [
+            ["1", "1", "0", "0", "0"],
+            ["1", "1", "0", "0", "0"],
+            ["0", "0", "1", "0", "0"],
+            ["0", "0", "0", "1", "1"]
+        ]
+        let expected = 3
+        XCTAssertEqual(expected, solution.numIslands(input))
+    }
+    
+    func testNumberOfIslands2() {
+        let input: [[Character]] =  [
+            ["1", "1", "1", "1", "0"],
+            ["1", "1", "0", "1", "0"],
+            ["1", "1", "0", "0", "0"],
+            ["0", "0", "0", "0", "0"]
+        ]
+        let expected = 1
+        XCTAssertEqual(expected, solution.numIslands(input))
+    }
+    
+    func testNumberOfIslands3() {
+        let input: [[Character]] = [
+            ["0", "0", "0", "0", "0"],
+            ["0", "1", "1", "1", "0"],
+            ["0", "0", "0", "0", "0"],
+            ["0", "0", "0", "0", "0"]
+        ]
+        let expected = 1
+        XCTAssertEqual(expected, solution.numIslands(input))
+    }
+}
 
-let input2 = [
-    [one, one, one, one, zero],
-    [one, one, zero, one, zero],
-    [one, one, zero, zero, zero],
-    [zero, zero, zero, zero, zero]
-]
-/**
- Input:
- 11110
- 11010
- 11000
- 00000
- 
- Output: 1
- */
-print(solution.numIslands(input2))
-
-let input3 = [
-    [zero, zero, zero, zero, zero],
-    [zero, one, one, one, zero],
-    [zero, zero, zero, zero, zero],
-    [zero, zero, zero, zero, zero]
-]
-/**
- Input:
- 00000
- 01110
- 00000
- 00000
- 
- Output: 1
- */
-print(solution.numIslands(input3))
+Tests.defaultTestSuite.run()
